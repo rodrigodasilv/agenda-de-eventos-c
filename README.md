@@ -1,5 +1,5 @@
 # Trabalho 2 Data Structures em C
-###Programa que gerencie um cadastro simples de uma agenda de eventos em C.
+### Programa que gerencie um cadastro simples de uma agenda de eventos em C.
 
 O objetivo do trabalho é desenvolver um programa que gerencie um cadastro
 simples de uma agenda de eventos. Quando inicializado, o programa deve carregar os
