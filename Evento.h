@@ -15,3 +15,4 @@ Hora getHoraFim(Evento *e);
 char getDescricao(Evento *e);
 char getLocal(Evento *e);
 void mostraEvento(Evento *e);
+void salva_evento(FILE* arquivo, Evento *e);

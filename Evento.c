@@ -25,5 +25,14 @@ void mostraEvento(Evento *e){
 	printf("Inicio: %02d:%02d \n", gethora(&e->inicio),getminuto(&e->inicio));
 	printf("Fim: %02d:%02d \n", gethora(&e->fim),getminuto(&e->fim));
 	printf("Descricao: %s \n", e->descricao);
-	printf("Local: %s", e->local);
+	printf("Local: %s \n", e->local);
 }
+
+void salva_evento(FILE* arquivo, Evento *e) {
+	fprintf(arquivo, "Data: %02d/%02d/%04d \n", getDia(&e->data),getMes(&e->data),getAno(&e->data));
+	fprintf(arquivo, "Inicio: %02d:%02d \n", gethora(&e->inicio),getminuto(&e->inicio));
+	fprintf(arquivo, "Fim: %02d:%02d \n", gethora(&e->fim),getminuto(&e->fim));
+	fprintf(arquivo, "Descricao: %s \n", e->descricao);
+	fprintf(arquivo, "Local: %s \n", e->local);
+}
+
