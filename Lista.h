@@ -8,7 +8,7 @@ typedef struct ele {
 	struct ele *proximo;
 } Elemento;
 
-// Cabeçalho de lista
+// CabeÃ§alho de lista
 typedef struct {
 	Elemento *cabeca;
 	int tamInfo, qtd;
@@ -30,7 +30,8 @@ int insere_ordem( Lista *p, void *info, int (*compara)(void*, void*) );
 void concatena( Lista *l1, Lista *l2 );
 void concatena_v2( Lista *l1, Lista *l2 );
 void mostra_lista_invertida( Lista l, void (*mostra)(void *) );
+void salvar(Lista l, void (*salva)(void *, void *), char* nome_arquivo);
 
 
-int conta_elementos( Lista l ); // Função inútil na prática, pois temos o campo 'qtd'.
+int conta_elementos( Lista l ); // FunÃ§Ã£o inÃºtil na prÃ¡tica, pois temos o campo 'qtd'.
 Lista busca_todos( Lista l, void *i, int (*compara)(void*,void*) );

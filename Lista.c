@@ -8,11 +8,11 @@
 Elemento *aloca_elemento( void *info, int tam ) {
 	Elemento *p = malloc( sizeof(Elemento) );
 	if( p == NULL )
-		return NULL; // Erro, falta de memória!
+		return NULL; // Erro, falta de memÃ³ria!
 	p->info = malloc( tam );
 	if( p->info == NULL ){
 		free(p);
-		return NULL; // Erro, falta de memória!
+		return NULL; // Erro, falta de memÃ³ria!
 	}
 	memcpy(p->info, info, tam);
 	return p; // Sucesso!
@@ -34,7 +34,7 @@ int lista_vazia ( Lista l ){
 int insere_inicio( Lista *p, void *info ){
 	Elemento *novo = aloca_elemento( info, p->tamInfo );
 	if( novo == NULL )
-		return 0; // Erro, falta de memória!
+		return 0; // Erro, falta de memÃ³ria!
 
 	novo->proximo = p->cabeca;
 	p->cabeca = novo;
@@ -65,7 +65,7 @@ int insere_fim( Lista *p, void *info ){
 
 	Elemento *novo = aloca_elemento( info, p->tamInfo );
 	if( novo == NULL )
-    	return 0; // Erro, falta de memória!
+    	return 0; // Erro, falta de memÃ³ria!
 
 	aux->proximo = novo;
 	novo->proximo = NULL;
@@ -100,11 +100,11 @@ int insere_pos( Lista *p, void *info , int pos ){
 	Elemento *aux = p->cabeca;
 	int cont;
 	for( cont = 0 ; cont < pos-1 ; cont++ )
-		aux = aux->proximo; // Vai até elemento em pos-1
+		aux = aux->proximo; // Vai atÃ© elemento em pos-1
 	
 	Elemento *novo = aloca_elemento( info, p->tamInfo );
 	if( novo == NULL )
-		return 0; // Erro, falta de memória!
+		return 0; // Erro, falta de memÃ³ria!
 	
 	novo->proximo = aux->proximo;
 	aux->proximo = novo;
@@ -125,7 +125,7 @@ int remove_pos( Lista *p, void *info , int pos ){
 	Elemento *aux = p->cabeca;
 	int cont;
 	for( cont = 0 ; cont < pos-1 ; cont++ )
-		aux = aux->proximo; // Vai até pos-1
+		aux = aux->proximo; // Vai atÃ© pos-1
 	
 	Elemento *x = aux->proximo;
 	aux->proximo = x->proximo;
@@ -146,7 +146,7 @@ int le_valor( Lista l, void *info , int pos ){
 	Elemento *aux = l.cabeca;
 	int cont;
 	for( cont = 0 ; cont < pos ; cont++ )
-		aux = aux->proximo; // Vai até elemento em pos
+		aux = aux->proximo; // Vai atÃ© elemento em pos
 	
 	memcpy( info, aux->info, l.tamInfo );
 	return 1; // Sucesso!
@@ -162,7 +162,7 @@ int modifica_valor( Lista l, void *info , int pos ){
 	Elemento *aux = l.cabeca;
 	int cont;
 	for( cont = 0 ; cont < pos ; cont++ )
-		aux = aux->proximo; // Vai até elemento em pos
+		aux = aux->proximo; // Vai atÃ© elemento em pos
 	
 	memcpy( aux->info, info, l.tamInfo );
 	return 1; // Sucesso!
@@ -174,10 +174,11 @@ void mostra_lista( Lista l, void (*mostra)(void *) ){
 	else{
 		printf("Dados da lista (%d elementos):\n", l.qtd );
 		Elemento *p = l.cabeca;
-		int cont = 0; // cont é o índice do elemento dentro da lista.
+		int cont = 0; // cont Ã© o Ã­ndice do elemento dentro da lista.
 		while( p != NULL ){
-			printf("[%d] ", cont);
-			mostra( p->info ); // Invocação por callback
+			printf("[%d]\n", cont);
+			mostra( p->info ); // InvocaÃ§Ã£o por callback
+			printf("\n");
 			p = p->proximo;
 			cont++;
 		}
@@ -250,6 +251,22 @@ void percorre( Elemento *p, int idc, void (*mostra)(void *) ){
 		mostra( p->info );
 	}
 }
+
+void salvar(Lista l, void (*salva)(void *, void *), char* nome_arquivo) {
+	FILE* arquivo = fopen(nome_arquivo, "w");
+	
+	Elemento *p = l.cabeca;
+	int qtd = l.qtd;
+	fprintf(arquivo, "%d\n", qtd);
+	int tamInfo = l.tamInfo;
+	int cont = 0;
+	for(cont; cont < qtd; cont++) {
+		salva(arquivo, p->info);
+		p = p->proximo;
+	}
+	fclose(arquivo);
+}
+
 
 void mostra_lista_invertida( Lista l, void (*mostra)(void *) ){
 	if( lista_vazia( l ) )
