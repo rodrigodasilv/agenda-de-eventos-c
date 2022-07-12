@@ -47,7 +47,8 @@ int main(int argc, char *argv[]) {
 	        } 
 	        case 6: {
 	        	// Salvar lista num arquivo
-				salvar_lista(l1, salva_evento, "arquivo_eventos.txt");
+			salvar_lista(l1, salva_evento, "arquivo_eventos.txt");
+			limpa_lista(&l1);
 	            break;
 	        }
 			default: {
