@@ -66,8 +66,8 @@ int carregar_lista(Lista *l, char* nome_arquivo){
 		setHora(&fim,horaFim,minutoFim);
 		
 		char descricao[50], local[50];
-		fscanf(arquivo, "%s", &descricao); //Descricao
-		fscanf(arquivo, "%s", &local); //Local
+		fscanf(arquivo, " %[^\n]", &descricao); //Descricao
+		fscanf(arquivo, " %[^\n]", &local); //Local
 		Evento e;
 		setEvento(&e,d,inicio,fim,descricao,local);
 		insere_ordem(l,&e,compara_evento);
@@ -135,15 +135,15 @@ void criaEvento(Evento *e){
 		scanf(" %d",&horaFim);
 	}while(horaFim<0 || horaFim>23);
 	do{
-		printf("Informe o minuto de inicio do evento: ");
+		printf("Informe o minuto de fim do evento: ");
 		scanf(" %d",&minutoFim);
 	}while(minutoFim < 0 || minutoFim>59);
 	setHora(&fim,horaFim,minutoFim);
 	
 	char descricao[50], local[50];
 	printf("Informe a descricao do evento: ");
-	scanf(" %s", &descricao); //Descricao
+	scanf(" %[^\n]%*c", &descricao); //Descricao
 	printf("Informe o local do evento: ");
-	scanf(" %s", &local); //Local
+	scanf(" %[^\n]%*c", &local); //Local
 	setEvento(e,d,inicio,fim,descricao,local);
 }
