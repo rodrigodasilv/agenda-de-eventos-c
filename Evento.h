@@ -1,5 +1,7 @@
 #include "Hora.h"
 #include "Data.h"
+#include "Lista.h"
+#define ERRO_SEM_ARQUIVO	-1
 
 typedef struct{
 	Data data;
@@ -14,5 +16,8 @@ Hora getHoraInicio(Evento *e);
 Hora getHoraFim(Evento *e);
 char getDescricao(Evento *e);
 char getLocal(Evento *e);
-void mostraEvento(Evento *e);
-void salva_evento(FILE* arquivo, Evento *e);
+void mostraEvento(void *evento);
+void salva_evento(FILE* arquivo, void *evento);
+int carregar_lista(Lista *l, char* nome_arquivo);
+int compara_evento( void *x, void *y );
+void criaEvento(Evento *e);

@@ -252,7 +252,7 @@ void percorre( Elemento *p, int idc, void (*mostra)(void *) ){
 	}
 }
 
-void salvar(Lista l, void (*salva)(void *, void *), char* nome_arquivo) {
+void salvar_lista(Lista l, void (*salva)(FILE *, void *), char* nome_arquivo) {
 	FILE* arquivo = fopen(nome_arquivo, "w");
 	
 	Elemento *p = l.cabeca;
