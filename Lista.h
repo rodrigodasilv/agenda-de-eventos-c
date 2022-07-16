@@ -1,5 +1,6 @@
 // Constantes de erro
 #define ERRO_LISTA_VAZIA	-1
+#define ERRO_EVENTO_JA_EXISTE -1
 #define ERRO_POS_INVALIDA	-2
 
 // Elemento de lista
@@ -34,3 +35,6 @@ void salvar_lista(Lista l, void (*salva)(FILE *, void *), char* nome_arquivo);
 
 int conta_elementos( Lista l ); // Função inútil na prática, pois temos o campo 'qtd'.
 Lista busca_todos( Lista l, void *i, int (*compara)(void*,void*) );
+Lista busca_todos_mostra( Lista l, void *i, int (*compara)(void*,void*) );
+void excl_lista(Lista *l,Lista *e);
+int remove_pos_sem_cop( Lista *p,int pos );

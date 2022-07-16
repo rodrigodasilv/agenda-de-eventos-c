@@ -136,6 +136,35 @@ int remove_pos( Lista *p, void *info , int pos ){
 	return 1; // Sucesso!
 }
 
+int remove_pos_sem_cop( Lista *p,int pos ){
+	if( lista_vazia( *p ) )
+		return ERRO_LISTA_VAZIA;
+
+	if( pos < 0 || pos >= p->qtd )
+		return ERRO_POS_INVALIDA;
+		
+	if(pos==0){
+		Elemento *aux = p->cabeca;
+		p->cabeca = aux->proximo;
+		free( aux->info );
+		free( aux );
+		p->qtd--;
+		return 1;
+	}
+	
+	Elemento *aux = p->cabeca;
+	int cont;
+	for( cont = 0 ; cont < pos-1 ; cont++ )
+		aux = aux->proximo; // Vai até pos-1
+	
+	Elemento *x = aux->proximo;
+	aux->proximo = x->proximo;
+	free( x->info );
+	free( x );
+	p->qtd--;
+	return 1; // Sucesso!
+}
+
 int le_valor( Lista l, void *info , int pos ){
 	if( lista_vazia( l ) )
 		return ERRO_LISTA_VAZIA;
@@ -170,7 +199,7 @@ int modifica_valor( Lista l, void *info , int pos ){
 
 void mostra_lista( Lista l, void (*mostra)(void *) ){
 	if( lista_vazia( l ) )
-		printf("Lista vazia!\n");
+		printf("0 eventos encontrados!\n");
 	else{
 		printf("Dados da lista (%d elementos):\n", l.qtd );
 		Elemento *p = l.cabeca;
@@ -214,6 +243,9 @@ int insere_ordem( Lista *p, void *info, int (*compara)(void*, void*) ){
 	while( aux != NULL && compara( info, aux->info ) > 0 ){
 		aux = aux->proximo;
 		cont++;
+	}
+	if(aux != NULL && compara( info, aux->info )==0){	
+		return ERRO_EVENTO_JA_EXISTE;
 	}
 	return insere_pos( p, info, cont );
 }
@@ -291,4 +323,34 @@ Lista busca_todos( Lista l, void *i, int (*compara)(void*,void*) ){
 		aux = aux->proximo;
 	}
 	return f;
+}
+
+Lista busca_todos_mostra( Lista l, void *i, int (*compara)(void*,void*) ){
+	Lista f;
+	inicializa_lista(&f,l.tamInfo);
+	Elemento *aux = l.cabeca;
+	while( aux != NULL){
+		if(compara( i, aux->info ) == 0){
+			insere_fim(&f,aux->info);
+		}
+		aux = aux->proximo;
+	}
+	return f;
+}
+
+void excl_lista(Lista *l,Lista *e){
+	Elemento *aux = e->cabeca;
+	int *pos;
+	int cont =0;
+	while( aux != NULL){
+		pos = aux->info;
+		remove_pos_sem_cop(l, (*pos-cont) );
+		aux = aux->proximo;
+		cont++;
+	}
+	if(cont==0){
+		printf("Nenhum item foi encontrado para exclusao!\n");
+	}else{
+		printf("Evento(s) removido(s) com sucesso!\n");
+	}
 }
