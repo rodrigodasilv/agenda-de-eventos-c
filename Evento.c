@@ -66,8 +66,8 @@ int carregar_lista(Lista *l, char* nome_arquivo){
 		setHora(&fim,horaFim,minutoFim);
 		
 		char descricao[50], local[50];
-		fscanf(arquivo, " %[^\n]", &descricao); //Descricao
-		fscanf(arquivo, " %[^\n]", &local); //Local
+		fscanf(arquivo, "%s", &descricao); //Descricao
+		fscanf(arquivo, "%s", &local); //Local
 		Evento e;
 		setEvento(&e,d,inicio,fim,descricao,local);
 		insere_ordem(l,&e,compara_evento);
@@ -99,6 +99,37 @@ int compara_evento( void *x, void *y ){
 	if( gethora(&a->inicio) < gethora(&b->inicio) )
 		return -1;
 	return 0;
+}
+
+void criaEventoInicio(Evento *e){
+	int dia,mes,ano;
+	do{
+		printf("Informe o dia do evento: ");
+		scanf(" %d",&dia);
+	}while(dia<1 || dia > 32);
+	do{
+		printf("Informe o mes do evento: ");
+		scanf(" %d",&mes);
+	}while(mes<1 || mes > 12);
+	do{
+		printf("Informe o ano do evento: ");
+		scanf(" %d",&ano);
+	}while(ano<0);
+	Data d;
+	setData(&d,dia,mes,ano);
+	Hora inicio;
+	int horaInicio, minutoInicio;
+	do{
+		printf("Informe a hora de inicio do evento: ");
+		scanf(" %d",&horaInicio);
+	}while(horaInicio<0 || horaInicio>23);
+	do{
+		printf("Informe o minuto de inicio do evento: ");
+		scanf(" %d",&minutoInicio);
+	}while(minutoInicio < 0 || minutoInicio>59);
+	setHora(&inicio,horaInicio,minutoInicio);
+	e->data = d;
+	e->inicio = inicio;
 }
 
 void criaEvento(Evento *e){
@@ -142,8 +173,33 @@ void criaEvento(Evento *e){
 	
 	char descricao[50], local[50];
 	printf("Informe a descricao do evento: ");
-	scanf(" %[^\n]%*c", &descricao); //Descricao
+	scanf(" %[^\n]", &descricao); //Descricao
 	printf("Informe o local do evento: ");
-	scanf(" %[^\n]%*c", &local); //Local
+	scanf(" %[^\n]", &local); //Local
 	setEvento(e,d,inicio,fim,descricao,local);
+}
+
+int compara_evento_data( void *x, void *y ){
+	Data *a = x;
+	Evento *b = y;
+	
+	if(getAno(a)==getAno(&b->data) && getMes(a)==getMes(&b->data) && getDia(a) == getDia(&b->data)){
+		return 0;		
+	}
+	return -1;
+}
+
+int compara_evento_hr_inicio( void *x, void *y ){
+	Evento *a = x;
+	Evento *b = y;
+	if(getAno(&a->data)==getAno(&b->data) && getMes(&a->data)==getMes(&b->data) && getDia(&a->data) == getDia(&b->data) && a->inicio.hora == b->inicio.hora && a->inicio.minuto==b->inicio.minuto){
+		return 0;	
+	}
+	return -1;
+}
+
+int compara_evento_desc( void *x, void *y ){
+	char *desc = x;
+	Evento *b = y;
+	return strcmp(desc,b->descricao);
 }

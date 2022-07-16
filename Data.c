@@ -16,3 +16,16 @@ int getMes(Data *d){
 int getAno(Data *d){
 	return d->ano;
 }
+
+void criaData(Data *d){
+	int dia, mes, ano;
+	do{
+		printf("Informe o dia: ");
+		scanf(" %d",&dia);
+		printf("Informe o mes: ");
+		scanf(" %d",&mes);
+		printf("Informe o ano: ");
+		scanf(" %d",&ano);
+	}while(dia < 1 || dia>31 || mes<1 || mes>12 || ano<0);
+	setData(d,dia,mes,ano);
+}

@@ -29,7 +29,12 @@ int main(int argc, char *argv[]) {
 			case 1: {  
 				Evento e;
 				criaEvento(&e);
-				insere_ordem(&l1, &e,compara_evento);
+				//verifIntervalo(&e,&l1); Verifica se evento nao sobrepoe outro evento
+				if(insere_ordem(&l1, &e,compara_evento)==ERRO_EVENTO_JA_EXISTE){
+					printf("Evento ja existe na lista!\n");
+				}else{
+					printf("Evento inserido com sucesso!\n");
+				}
 	       		break;            
 	        }
 	        case 2: {
@@ -37,18 +42,50 @@ int main(int argc, char *argv[]) {
 	            break;    
 	        }
 	        case 3: {
+	        	Data d;
+	        	criaData(&d);
+	        	mostra_lista( busca_todos_mostra(l1,&d,compara_evento_data), mostraEvento);
 	        	break;     
 	        } 
 	        case 4: {
+	        	char desc[50];
+	        	printf("Informe a descricao: ");
+	        	scanf(" %[^\n]",&desc);
+	        	mostra_lista( busca_todos_mostra(l1,&desc,compara_evento_desc), mostraEvento);
 				break;	               
 	        } 
 	        case 5: {
+	        	int opcao_remocao;
+	        	Data dd;
+	        	Evento ee;
+	        	Lista exc;
+	        	do{
+	        		printf("\nInforme a operacao desejada: \n1) Dada uma data, remover todos os eventos dessa data \n2) Data uma data e hora inicial, remover o evento \n3) Sair\n");
+	        		scanf(" %d",&opcao_remocao);
+	        		switch(opcao_remocao){
+	        			case 1:{
+	        				criaData(&dd);
+	        				exc = busca_todos(l1,&dd,compara_evento_data);
+							break;
+						}
+						case 2:{
+							criaEventoInicio(&ee);
+							exc = busca_todos(l1,&ee,compara_evento_hr_inicio);
+							break;
+						}
+	        			default:{
+							break;
+						}
+					}
+					if(opcao_remocao == 1 || opcao_remocao == 2){
+						excl_lista(&l1,&exc);
+					}
+				}while(opcao_remocao !=1 && opcao_remocao!=2 && opcao_remocao!=3);
 	       		break;    
 	        } 
 	        case 6: {
 	        	// Salvar lista num arquivo
-			salvar_lista(l1, salva_evento, "arquivo_eventos.txt");
-			limpa_lista(&l1);
+				salvar_lista(l1, salva_evento, "arquivo_eventos.txt");
 	            break;
 	        }
 			default: {
