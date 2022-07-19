@@ -31,11 +31,11 @@ void mostraEvento(void *evento){
 
 void salva_evento(FILE* arquivo, void *evento) {
 	Evento *e = evento;
-	fprintf(arquivo, "%02d %02d %04d \n", getDia(&e->data),getMes(&e->data),getAno(&e->data)); //Data
-	fprintf(arquivo, "%02d %02d \n", gethora(&e->inicio),getminuto(&e->inicio)); //Hora inicio
-	fprintf(arquivo, "%02d %02d \n", gethora(&e->fim),getminuto(&e->fim)); //Hora fim
-	fprintf(arquivo, "%s \n", e->descricao); //Descricao
-	fprintf(arquivo, "%s \n", e->local); //Local
+	fprintf(arquivo, "%02d %02d %04d\n", getDia(&e->data),getMes(&e->data),getAno(&e->data)); //Data
+	fprintf(arquivo, "%02d %02d\n", gethora(&e->inicio),getminuto(&e->inicio)); //Hora inicio
+	fprintf(arquivo, "%02d %02d\n", gethora(&e->fim),getminuto(&e->fim)); //Hora fim
+	fprintf(arquivo, "%s\n", e->descricao); //Descricao
+	fprintf(arquivo, "%s\n", e->local); //Local
 }
 
 int carregar_lista(Lista *l, char* nome_arquivo){
@@ -70,7 +70,7 @@ int carregar_lista(Lista *l, char* nome_arquivo){
 		fscanf(arquivo, "%s", &local); //Local
 		Evento e;
 		setEvento(&e,d,inicio,fim,descricao,local);
-		insere_ordem(l,&e,compara_evento);
+		insere_ordem(l,&e,compara_evento, verifica_conflito);
 	}	
 	fclose(arquivo);	
 	return 0;
@@ -98,7 +98,25 @@ int compara_evento( void *x, void *y ){
 		return 1;
 	if( gethora(&a->inicio) < gethora(&b->inicio) )
 		return -1;
+		
+	if(getminuto(&a->inicio) > getminuto(&b->inicio))
+		return 1;
+	if( getminuto(&a->inicio) < getminuto(&b->inicio) )
+		return -1;
 	return 0;
+}
+
+int verifica_conflito( void *x, void *y) {
+	Evento *a = x, *b = y;
+	if (b == NULL || a == NULL)
+		return 1;
+	if ( gethora(&a->fim) > gethora(&b->inicio)) {
+		return 0;	
+	}
+	if ( gethora(&a->fim) == gethora(&b->inicio) && getminuto(&a->fim) > getminuto(&b->inicio) ) {
+		return 0;
+	}
+	return 1;
 }
 
 void criaEventoInicio(Evento *e){
@@ -201,5 +219,6 @@ int compara_evento_hr_inicio( void *x, void *y ){
 int compara_evento_desc( void *x, void *y ){
 	char *desc = x;
 	Evento *b = y;
-	return strcmp(desc,b->descricao);
+  // printf(":%s:\t :%s:\t %d\n", x, b->descricao, strcmp(desc, b->descricao));
+  return strcmp(desc,b->descricao);
 }

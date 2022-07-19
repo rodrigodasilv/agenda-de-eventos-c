@@ -30,9 +30,12 @@ int main(int argc, char *argv[]) {
 				Evento e;
 				criaEvento(&e);
 				//verifIntervalo(&e,&l1); Verifica se evento nao sobrepoe outro evento
-				if(insere_ordem(&l1, &e,compara_evento)==ERRO_EVENTO_JA_EXISTE){
+				int resposta = insere_ordem(&l1, &e,compara_evento, verifica_conflito);
+				if(resposta==ERRO_EVENTO_JA_EXISTE){
 					printf("Evento ja existe na lista!\n");
-				}else{
+				} else if (resposta == ERRO_CONFLITO) {
+					printf("Evento em conflito!\n");
+				} else {
 					printf("Evento inserido com sucesso!\n");
 				}
 	       		break;            
@@ -51,6 +54,7 @@ int main(int argc, char *argv[]) {
 	        	char desc[50];
 	        	printf("Informe a descricao: ");
 	        	scanf(" %[^\n]",&desc);
+	        	printf("%s\n", desc);
 	        	mostra_lista( busca_todos_mostra(l1,&desc,compara_evento_desc), mostraEvento);
 				break;	               
 	        } 

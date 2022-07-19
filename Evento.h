@@ -25,3 +25,4 @@ void criaEvento(Evento *e);
 int compara_evento_desc( void *x, void *y );
 int compara_evento_hr_inicio( void *x, void *y );
 void criaEventoInicio(Evento *e);
+int verifica_conflito( void *x, void *y);

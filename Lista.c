@@ -90,7 +90,7 @@ int remove_fim( Lista *p, void *info ){
    return 1; // Sucesso!
 }
 
-int insere_pos( Lista *p, void *info , int pos ){
+int insere_pos( Lista *p, void *info , int pos, int (*conflito)(void*, void*) ){
 	if( pos < 0 || pos > p->qtd )
 		return ERRO_POS_INVALIDA;
 		
@@ -103,9 +103,15 @@ int insere_pos( Lista *p, void *info , int pos ){
 		aux = aux->proximo; // Vai até elemento em pos-1
 	
 	Elemento *novo = aloca_elemento( info, p->tamInfo );
+	Elemento *prox = aux->proximo;
 	if( novo == NULL )
 		return 0; // Erro, falta de memória!
-	
+	if (aux != NULL && conflito(aux->info, novo->info) != 1) {
+		return ERRO_CONFLITO;
+	}
+	if (prox != NULL && conflito(novo->info, prox->info) != 1) {
+		return ERRO_CONFLITO;
+	}
 	novo->proximo = aux->proximo;
 	aux->proximo = novo;
 	p->qtd++;
@@ -237,7 +243,7 @@ void limpa_lista( Lista *l ){
 	l->qtd = 0;
 }
 
-int insere_ordem( Lista *p, void *info, int (*compara)(void*, void*) ){
+int insere_ordem( Lista *p, void *info, int (*compara)(void*, void*), int (*conflito)(void*, void*) ){
 	Elemento *aux = p->cabeca;
 	int cont = 0;
 	while( aux != NULL && compara( info, aux->info ) > 0 ){
@@ -247,7 +253,7 @@ int insere_ordem( Lista *p, void *info, int (*compara)(void*, void*) ){
 	if(aux != NULL && compara( info, aux->info )==0){	
 		return ERRO_EVENTO_JA_EXISTE;
 	}
-	return insere_pos( p, info, cont );
+  return insere_pos( p, info, cont, conflito );
 }
 
 void concatena( Lista *l1, Lista *l2 ){
