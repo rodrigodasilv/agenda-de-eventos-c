@@ -253,7 +253,7 @@ int insere_ordem( Lista *p, void *info, int (*compara)(void*, void*), int (*conf
 	if(aux != NULL && compara( info, aux->info )==0){	
 		return ERRO_EVENTO_JA_EXISTE;
 	}
-	return insere_pos( p, info, cont, conflito );
+  return insere_pos( p, info, cont, conflito );
 }
 
 void concatena( Lista *l1, Lista *l2 ){

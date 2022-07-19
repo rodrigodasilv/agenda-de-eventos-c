@@ -66,8 +66,8 @@ int carregar_lista(Lista *l, char* nome_arquivo){
 		setHora(&fim,horaFim,minutoFim);
 		
 		char descricao[50], local[50];
-		fscanf(arquivo, " %[^\n]", &descricao); //Descricao
-		fscanf(arquivo, " %[^\n]", &local); //Local
+		fscanf(arquivo, "%s", &descricao); //Descricao
+		fscanf(arquivo, "%s", &local); //Local
 		Evento e;
 		setEvento(&e,d,inicio,fim,descricao,local);
 		insere_ordem(l,&e,compara_evento, verifica_conflito);
@@ -219,6 +219,6 @@ int compara_evento_hr_inicio( void *x, void *y ){
 int compara_evento_desc( void *x, void *y ){
 	char *desc = x;
 	Evento *b = y;
-	// printf(":%s:\t :%s:\t %d\n", x, b->descricao, strcmp(desc, b->descricao));
-	return strcmp(desc,b->descricao);
+  // printf(":%s:\t :%s:\t %d\n", x, b->descricao, strcmp(desc, b->descricao));
+  return strcmp(desc,b->descricao);
 }
