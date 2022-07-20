@@ -140,11 +140,9 @@ void criaEventoInicio(Evento *e){
 	do{
 		printf("Informe a hora de inicio do evento: ");
 		scanf(" %d",&horaInicio);
-	}while(horaInicio<0 || horaInicio>23);
-	do{
 		printf("Informe o minuto de inicio do evento: ");
 		scanf(" %d",&minutoInicio);
-	}while(minutoInicio < 0 || minutoInicio>59);
+	}while(minutoInicio < 0 || minutoInicio>59 || horaInicio<0 || horaInicio>23);
 	setHora(&inicio,horaInicio,minutoInicio);
 	e->data = d;
 	e->inicio = inicio;
@@ -168,25 +166,25 @@ void criaEvento(Evento *e){
 	setData(&d,dia,mes,ano);
 	Hora inicio;
 	int horaInicio, minutoInicio;
+	Hora fim;
+	int horaFim,minutoFim;
+	
 	do{
 		printf("Informe a hora de inicio do evento: ");
 		scanf(" %d",&horaInicio);
-	}while(horaInicio<0 || horaInicio>23);
-	do{
 		printf("Informe o minuto de inicio do evento: ");
 		scanf(" %d",&minutoInicio);
-	}while(minutoInicio < 0 || minutoInicio>59);
-	setHora(&inicio,horaInicio,minutoInicio);
-	Hora fim;
-	int horaFim,minutoFim;
-	do{
 		printf("Informe a hora de fim do evento: ");
 		scanf(" %d",&horaFim);
-	}while(horaFim<0 || horaFim>23);
-	do{
 		printf("Informe o minuto de fim do evento: ");
 		scanf(" %d",&minutoFim);
-	}while(minutoFim < 0 || minutoFim>59);
+		if (minutoFim < 0 || minutoFim>59 || minutoInicio < 0 || minutoInicio>59 || horaInicio<0 || horaInicio>23 || horaFim<0 || horaFim>23){
+			printf("Data/Hora de inicio ou fim sao invalidos! \n");
+		}else if(horaFim<horaInicio || (horaFim==horaInicio && minutoFim<minutoInicio)){
+			printf("Um evento nao pode durar mais de 24 horas! \n");
+		}
+	}while(minutoFim < 0 || minutoFim>59 || minutoInicio < 0 || minutoInicio>59 || horaInicio<0 || horaInicio>23 || horaFim<0 || horaFim>23 || horaFim<horaInicio || (horaFim==horaInicio && minutoFim<minutoInicio));
+	setHora(&inicio,horaInicio,minutoInicio);
 	setHora(&fim,horaFim,minutoFim);
 	
 	char descricao[50], local[50];
