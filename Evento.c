@@ -180,10 +180,10 @@ void criaEvento(Evento *e){
 		scanf(" %d",&minutoFim);
 		if (minutoFim < 0 || minutoFim>59 || minutoInicio < 0 || minutoInicio>59 || horaInicio<0 || horaInicio>23 || horaFim<0 || horaFim>23){
 			printf("Data/Hora de inicio ou fim sao invalidos! \n");
-		}else if(horaFim<=horaInicio || (horaFim==horaInicio && minutoFim<=minutoInicio)){
+		}else if(horaFim<horaInicio || (horaFim==horaInicio && minutoFim<=minutoInicio)){
 			printf("Um evento nao pode durar mais de 24 horas! \n");
 		}
-	}while(minutoFim < 0 || minutoFim>59 || minutoInicio < 0 || minutoInicio>59 || horaInicio<0 || horaInicio>23 || horaFim<0 || horaFim>23 || horaFim<=horaInicio || (horaFim==horaInicio && minutoFim<=minutoInicio));
+	}while(minutoFim < 0 || minutoFim>59 || minutoInicio < 0 || minutoInicio>59 || horaInicio<0 || horaInicio>23 || horaFim<0 || horaFim>23 || horaFim<horaInicio || (horaFim==horaInicio && minutoFim<=minutoInicio));
 	setHora(&inicio,horaInicio,minutoInicio);
 	setHora(&fim,horaFim,minutoFim);
 	
