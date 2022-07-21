@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "Evento.h"
-//#include "Lista.h"
 
 
 int main(int argc, char *argv[]) {
@@ -29,7 +28,6 @@ int main(int argc, char *argv[]) {
 			case 1: {  
 				Evento e;
 				criaEvento(&e);
-				//verifIntervalo(&e,&l1); Verifica se evento nao sobrepoe outro evento
 				int resposta = insere_ordem(&l1, &e,compara_evento, verifica_conflito);
 				if(resposta==ERRO_EVENTO_JA_EXISTE){
 					printf("Evento ja existe na lista!\n");
@@ -90,7 +88,7 @@ int main(int argc, char *argv[]) {
 	        case 6: {
 	        	// Salvar lista num arquivo
 				salvar_lista(l1, salva_evento, "arquivo_eventos.txt");
-			limpa_lista(&l1);
+				limpa_lista(&l1);
 	            break;
 	        }
 			default: {
