@@ -93,28 +93,41 @@ int remove_fim( Lista *p, void *info ){
 int insere_pos( Lista *p, void *info , int pos, int (*conflito)(void*, void*) ){
 	if( pos < 0 || pos > p->qtd )
 		return ERRO_POS_INVALIDA;
+
+	if( pos == 0  && lista_vazia(*p))
+	 	return insere_inicio( p, info );
+	else if (pos == 0) {
+		Elemento *aux = p->cabeca;
+		Elemento *novo = aloca_elemento( info, p->tamInfo );
+		if (conflito(novo->info, aux->info) != 1) {
+			return ERRO_CONFLITO;
+		}
+		novo->proximo = aux;
+		p->cabeca = novo;
+		p->qtd++;
 		
-	if( pos == 0 )
-		return insere_inicio( p, info );
-	
-	Elemento *aux = p->cabeca;
-	int cont;
-	for( cont = 0 ; cont < pos-1 ; cont++ )
-		aux = aux->proximo; // Vai até elemento em pos-1
-	
-	Elemento *novo = aloca_elemento( info, p->tamInfo );
-	Elemento *prox = aux->proximo;
-	if( novo == NULL )
-		return 0; // Erro, falta de memória!
-	if (aux != NULL && conflito(aux->info, novo->info) != 1) {
-		return ERRO_CONFLITO;
+	} else {
+		Elemento *aux = p->cabeca;
+		int cont;
+		for( cont = 0 ; cont < pos-1 ; cont++ )
+			aux = aux->proximo; // Vai até elemento em pos-1
+		
+		Elemento *novo = aloca_elemento( info, p->tamInfo );
+		Elemento *prox = aux->proximo;
+		if( novo == NULL )
+			return 0; // Erro, falta de memória!
+		if (aux != NULL && conflito(aux->info, novo->info) != 1) {
+			printf("conflito 1\n");
+			return ERRO_CONFLITO;
+		}
+		if (prox != NULL && conflito(novo->info, prox->info) != 1) {
+			printf("conflito 2\n");
+			return ERRO_CONFLITO;
+		}
+		novo->proximo = aux->proximo;
+		aux->proximo = novo;
+		p->qtd++;
 	}
-	if (prox != NULL && conflito(novo->info, prox->info) != 1) {
-		return ERRO_CONFLITO;
-	}
-	novo->proximo = aux->proximo;
-	aux->proximo = novo;
-	p->qtd++;
 	return 1; // Sucesso!
 }
 
@@ -253,7 +266,7 @@ int insere_ordem( Lista *p, void *info, int (*compara)(void*, void*), int (*conf
 	if(aux != NULL && compara( info, aux->info )==0){	
 		return ERRO_EVENTO_JA_EXISTE;
 	}
-  return insere_pos( p, info, cont, conflito );
+  	return insere_pos( p, info, cont, conflito );
 }
 
 void concatena( Lista *l1, Lista *l2 ){
